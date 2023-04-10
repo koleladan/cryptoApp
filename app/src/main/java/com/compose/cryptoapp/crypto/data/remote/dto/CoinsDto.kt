@@ -14,11 +14,9 @@ data class CoinsDto(
 fun CoinsDto.toCoins(): Coins {
     return Coins(
         id = id,
-        is_new = is_new,
         is_active = is_active,
         name = name,
         rank = rank,
-        symbol = symbol,
-        type = type
+        symbol = symbol
     )
 }

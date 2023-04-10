@@ -24,7 +24,7 @@ data class CoinInfoDto(
     val started_at: String,
     val symbol: String,
     val tags: List<TagDto>,
-    val team: List<TeamDto>,
+    val team: List<TeamMemberDto>,
     val type: String,
     val whitepaper: WhitepaperDto
 )
@@ -40,7 +40,7 @@ fun CoinInfoDto.toCoinInfo(): CoinInfo {
         is_new = is_new,
         last_data_at = last_data_at,
         links = links,
-        links_extended = links_extended,
+        links_extended = links_extended.map { it.toLinksExtended() },
         logo = logo,
         message = message,
         name = name,
@@ -50,8 +50,8 @@ fun CoinInfoDto.toCoinInfo(): CoinInfo {
         rank = rank,
         started_at = started_at,
         symbol = symbol,
-        tags = tags,
-        team = team,
+        tags = tags.map { it.toTag() },
+        team = team.map { it.toTeam() },
         type = type,
         whitepaper = whitepaper
     )

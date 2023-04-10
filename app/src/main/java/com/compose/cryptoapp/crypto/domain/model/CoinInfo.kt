@@ -13,7 +13,7 @@ data class CoinInfo(
     val is_new: Boolean,
     val last_data_at: String,
     val links: LinksDto,
-    val links_extended: List<LinksExtendedDto>,
+    val links_extended: List<LinksExtended>,
     val logo: String,
     val message: String,
     val name: String,
@@ -23,8 +23,8 @@ data class CoinInfo(
     val rank: Int,
     val started_at: String,
     val symbol: String,
-    val tags: List<TagDto>,
-    val team: List<TeamDto>,
+    val tags: List<Tag>,
+    val team: List<TeamMember>,
     val type: String,
     val whitepaper: WhitepaperDto
 )

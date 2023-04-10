@@ -1,14 +1,15 @@
 package com.compose.cryptoapp.crypto.data.remote.dto
 
-import com.compose.cryptoapp.crypto.domain.model.Team
 
-data class TeamDto(
+import com.compose.cryptoapp.crypto.domain.model.TeamMember
+
+data class TeamMemberDto(
     val id: String,
     val name: String,
     val position: String
 )
-fun TeamDto.toTeam(): Team {
-    return Team(
+fun TeamMemberDto.toTeam(): TeamMember {
+    return TeamMember(
         id = id,
         name = name,
         position = position
