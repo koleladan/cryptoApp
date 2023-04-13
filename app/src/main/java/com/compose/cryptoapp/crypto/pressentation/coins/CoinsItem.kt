@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.compose.cryptoapp.crypto.domain.model.Coins
+import com.compose.cryptoapp.crypto.pressentation.destinations.CoinDetailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -28,7 +29,11 @@ fun CoinsItem(
     Row(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
-        .padding(start = 10.dp, top = 10.dp),
+        .clickable {
+            navigator.navigate(CoinDetailScreenDestination(coins.id)
+            )
+        }
+        .padding(start = 20.dp, top = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
