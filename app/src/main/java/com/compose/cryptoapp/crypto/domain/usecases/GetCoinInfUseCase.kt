@@ -15,14 +15,14 @@ class GetCoinInfUseCase @Inject constructor(
 ) {
     operator fun invoke(id:String): Flow<Resource<CoinInfo>> = flow {
         try {
-            emit(Resource.Loading())
+            emit(Resource.Loading<CoinInfo>())
             val coinInfo = repository.GetCoinInfo(id).toCoinInfo()
-            emit(Resource.Success(coinInfo))
+            emit(Resource.Success<CoinInfo>(coinInfo))
 
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "Oops! An error occurred"))
+            emit(Resource.Error<CoinInfo>(e.localizedMessage ?: "Oops! An error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach the server. Check your connection"))
+            emit(Resource.Error<CoinInfo>("Couldn't reach the server. Check your connection"))
         }
     }
 }

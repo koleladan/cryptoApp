@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.compose.cryptoapp.crypto.domain.model.Coins
 import com.compose.cryptoapp.crypto.pressentation.destinations.CoinDetailScreenDestination
+import com.google.gson.Gson
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -26,12 +27,14 @@ fun CoinsItem(
     modifier: Modifier = Modifier
 
 ) {
+    fun navigateToCoinInfo(id:String) {navigator.navigate(CoinDetailScreenDestination(id = id))}
     Row(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
         .clickable {
-            navigator.navigate(CoinDetailScreenDestination(coins.id)
-            )
+            val gson = Gson().toJson(coins)
+            coins.id?.let { navigateToCoinInfo(id = gson) }
+
         }
         .padding(start = 20.dp, top = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween

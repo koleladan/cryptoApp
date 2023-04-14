@@ -23,7 +23,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 @Destination(start = true)
 fun CoinsScreen(
     navigator: DestinationsNavigator,
-    viewModel: CoinsViewModel = hiltViewModel()
+    viewModel: CoinsViewModel = hiltViewModel(),
+
 
 ){
     val state = viewModel.state.value

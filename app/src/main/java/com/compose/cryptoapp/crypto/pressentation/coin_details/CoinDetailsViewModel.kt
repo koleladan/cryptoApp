@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.compose.cryptoapp.core.Resource
 import com.compose.cryptoapp.crypto.data.remote.dto.CryptoService
+import com.compose.cryptoapp.crypto.domain.model.CoinInfo
 import com.compose.cryptoapp.crypto.domain.usecases.GetCoinInfUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,21 +22,23 @@ class CoinDetailsViewModel @Inject constructor(
    savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state = mutableStateOf(CoinDetailsState())
-    val state: State<CoinDetailsState> get() =  _state
+    val state: State<CoinDetailsState> =  _state
 
 
     init {
-        savedStateHandle.get<String>(CryptoService.COIN_ID)?.let { coinId ->
-            getCoinDetails(coinId)
+        savedStateHandle.get<String>(CryptoService.COIN_ID)?.let { id ->
+            getCoinDetails(id)
         }
+    }
+    fun updateCoinInfo(coinInfo: CoinInfo) {
+        _state.value = CoinDetailsState(coinInfo = coinInfo)
     }
 
 
 
-    fun getCoinDetails(id:String){
+    private fun getCoinDetails(id:String){
         viewModelScope.launch {
-            getCoinInfUseCase(id)
-                .collect{result ->
+            getCoinInfUseCase(id).onEach { result ->
                     when(result) {
                         is Resource.Success -> {
                             _state.value = CoinDetailsState(coinInfo = result.data)

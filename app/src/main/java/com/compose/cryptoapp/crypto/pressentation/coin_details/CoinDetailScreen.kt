@@ -16,6 +16,8 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.compose.cryptoapp.crypto.domain.model.CoinInfo
+import com.google.gson.Gson
 import com.ramcosta.composedestinations.annotation.Destination
 
 
@@ -24,41 +26,50 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Destination
 fun CoinDetailScreen(id: String) {
     val viewModel: CoinDetailsViewModel = hiltViewModel()
+    val info = Gson().fromJson(id, CoinInfo::class.java)
+    viewModel.updateCoinInfo(coinInfo = info)
     val state = viewModel.state.value
 
     Box(modifier = Modifier.fillMaxSize()) {
-        state.coinInfo?.let { coinInfo ->
-            LazyColumn(modifier = Modifier
-                .fillMaxSize(),
+       // val coinInfo = state.coinInfo
+     //   if (coinInfo != null) {
+
+      //  }
+            state.coinInfo?.let { coinInfo ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
                 contentPadding = PaddingValues(20.dp)
-            ){
+            ) {
                 item {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(
-                            text = "${coinInfo.rank}. (${coinInfo.symbol})",
-                            style = MaterialTheme.typography.h2,
-                            modifier = Modifier.weight(8f)
-                        )
-                        Text(
-                            text = if (coinInfo.is_active) "active" else "inactive",
-                            color = if (coinInfo.is_active) Color.Green else Color.Red,
-                            fontStyle = FontStyle.Italic,
-                            textAlign = TextAlign.End,
-                            modifier = Modifier
-                                .align(CenterVertically)
-                                .weight(2f)
-                        )
+                            Text(
+                                text = "${coinInfo.rank}. (${coinInfo.symbol})",
+                                style = MaterialTheme.typography.h2,
+                                modifier = Modifier.weight(8f)
+                            )
+                            Text(
+                                text = if (coinInfo.is_active) "active" else "inactive",
+                                color = if (coinInfo.is_active) Color.Green else Color.Red,
+                                fontStyle = FontStyle.Italic,
+                                textAlign = TextAlign.End,
+                                modifier = Modifier
+                                    .align(CenterVertically)
+                                    .weight(2f)
+                            )
 
                     }
                     Spacer(modifier = Modifier.height(15.dp))
-                    Text(
-                        text = coinInfo.description,
-                        style = MaterialTheme.typography.body2
+                        coinInfo.description?.let { it1 ->
+                            Text(
+                                text = it1,
+                                style = MaterialTheme.typography.body2
 
-                    )
+                            )
+                    }
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = "Tags",
@@ -67,12 +78,12 @@ fun CoinDetailScreen(id: String) {
                     Spacer(modifier = Modifier.height(15.dp))
                     //flowRow wraps the components incase they exceeds the bounds
                     FlowRow(
-                       modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
 
                     ) {
-                        coinInfo.tags.forEach { tag ->
-                            CoinTag(tag = tag.toString())
-                        }
+                            coinInfo.tags?.forEach { tag ->
+                                CoinTag(tag = tag.toString())
+                            }
 
                     }
                     Spacer(modifier = Modifier.height(15.dp))
@@ -84,19 +95,21 @@ fun CoinDetailScreen(id: String) {
 
 
                 }
-                items(coinInfo.team) {teamMember ->
-                    TeamListItem(
-                        teamMember = teamMember,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)
-                    )
-                    Divider()
+                    items(coinInfo.team) { teamMember ->
+                        TeamListItem(
+                            teamMember = teamMember,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                        )
+                        Divider()
+
                 }
 
             }
 
-        }
+
+    }
         if (state.error.isNotBlank() == true) {
             state.error.let {
                 Text(

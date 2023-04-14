@@ -21,16 +21,20 @@ fun TeamListItem(
         verticalArrangement = Arrangement.Center
 
     ) {
-        Text(
-            text = teamMember.name,
-            style = MaterialTheme.typography.h5
-        )
+        teamMember.name?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.h5
+            )
+        }
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = teamMember.position,
-            style = MaterialTheme.typography.body2,
-            fontStyle = FontStyle.Italic
-        )
+        teamMember.position?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.body2,
+                fontStyle = FontStyle.Italic
+            )
+        }
 
     }
     
